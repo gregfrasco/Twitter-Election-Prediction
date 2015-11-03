@@ -13,13 +13,15 @@ import java.sql.Time;
  * @author frascog
  */
 public class Tweet {
-    
+
     private Time timestamp;
     private final String author;
     private final String message;
     private List hashtags;
-    private boolean verfied;
-    private Party party;
+    private boolean verfied = false;
+    private int retweets = 0;
+    private int favorites = 0;
+    private Party party = Party.none;
 
     public Tweet(String author, String message) {
         this.author = author;
@@ -87,4 +89,30 @@ public class Tweet {
         this.party = party;
     }
 
+    public int getRetweets() {
+        return retweets;
+    }
+
+    public void setRetweets(int retweets) {
+        this.retweets = retweets;
+    }
+
+    public int getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(int favorites) {
+        this.favorites = favorites;
+    }
+
+    public static String getHeader() {
+        return "author,message,verfied,retweets,favorites,party";
+    }
+
+    @Override
+    public String toString() {
+        return this.author+","+this.message+","+this.verfied+","+this.retweets+","+this.favorites+","+this.party;
+    }
+    
+    
 }

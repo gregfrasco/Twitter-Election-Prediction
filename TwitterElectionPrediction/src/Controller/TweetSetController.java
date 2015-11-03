@@ -7,8 +7,13 @@ package Controller;
 
 import Model.DataSets;
 import Model.Tweet;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -46,6 +51,22 @@ public class TweetSetController {
 
     public DataSets getDataset() {
         return dataset;
+    }
+
+    public void save(File file) {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(file);
+            writer.println(Tweet.getHeader());
+            for (Tweet tweet : tweets) {
+                writer.println(tweet);
+            }
+            writer.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TweetSetController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            writer.close();
+        }
     }
     
 }

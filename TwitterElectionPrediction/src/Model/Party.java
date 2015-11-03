@@ -11,5 +11,8 @@ package Model;
  */
 public enum Party {
     democrat,
-    republican;
+    republican, 
+    none,
+    remove;
+    
 }
