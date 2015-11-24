@@ -35,7 +35,7 @@ public class Data {
                 line = line.replaceAll("^[^a-zA-Z0-9\\s]+|[^a-zA-Z0-9\\s]+$", "");
                 line = line.replaceAll("\"", "");
                 String[] data = line.split(",");
-                Group group;
+                Group group = null;
                 if(data[0].equals("4")){
                     group = Group.positive;
                 } else if(data[0].equals("2")){
@@ -43,6 +43,8 @@ public class Data {
                 }else if(data[0].equals("0")){
                     group = Group.negitive;
                 }
+                data = shortenExtraText(data);
+                tweets.add(new Tweet(data[5], group));
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,4 +52,22 @@ public class Data {
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private String[] shortenExtraText(String[] data){
+        if(data.length > 6){
+            data[5] = data[5]+data[6];
+            String[] newData = new String[data.length-1];
+            for (int i = 0; i < data.length-1; i++) {
+                newData[i] = data[i];
+            }
+            data = newData;
+            data = shortenExtraText(data);
+        }
+        return data;
+    }
+
+    public List<Tweet> getTweets() {
+        return tweets;
+    }
+    
 }

@@ -49,5 +49,17 @@ public class Tweet{
         this.message = message;
         this.group = group;
     } 
+
+    public boolean isPositive() {
+        return group.equals(Group.positive);
+    }
+    
+    public boolean isNegitive() {
+        return group.equals(Group.negitive);
+    }
+    
+    public boolean isNeutral() {
+        return group.equals(Group.neutral);
+    }
     
 }
