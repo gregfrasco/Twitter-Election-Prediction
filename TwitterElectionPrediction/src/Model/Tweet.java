@@ -22,6 +22,8 @@ public class Tweet {
     private int retweets = 0;
     private int favorites = 0;
     private Party party = Party.none;
+    private int democrat = 1;
+    private int rebpublican = 1;
 
     public Tweet(String author, String message) {
         this.author = author;
@@ -105,13 +107,29 @@ public class Tweet {
         this.favorites = favorites;
     }
 
+    public int getDemocrat() {
+        return democrat;
+    }
+
+    public void setDemocrat(int democrat) {
+        this.democrat = democrat;
+    }
+
+    public int getRebpublican() {
+        return rebpublican;
+    }
+
+    public void setRebpublican(int rebpublican) {
+        this.rebpublican = rebpublican;
+    }
+    
     public static String getHeader() {
-        return "author,message,verfied,retweets,favorites,party";
+        return "author,message,democratV,repblicainV,party";
     }
 
     @Override
     public String toString() {
-        return this.author+","+this.message+","+this.verfied+","+this.retweets+","+this.favorites+","+this.party;
+        return this.author+","+this.message+","+this.democrat+","+this.rebpublican+","+this.party;
     }
     
     

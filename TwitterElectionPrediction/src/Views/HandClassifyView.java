@@ -21,6 +21,7 @@ public class HandClassifyView extends javax.swing.JPanel {
     
     public HandClassifyView(HandClassifyController controller) {
         this.controller = controller;
+        this.controller.setIndex(0);
         this.tweet = controller.getNextTweet();
         initComponents();
         initMyComponents();
@@ -141,12 +142,14 @@ public class HandClassifyView extends javax.swing.JPanel {
         this.tweet.setParty(Party.republican);
         this.tweet = this.controller.getNextTweet();
         this.update();
+        this.controller.save();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //back
         this.tweet = this.controller.getLastTweet();
         this.update();
+        this.controller.save();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -154,12 +157,15 @@ public class HandClassifyView extends javax.swing.JPanel {
         this.tweet.setParty(Party.democrat);
         this.tweet = this.controller.getNextTweet();
         this.update();
+        this.controller.save();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //not releavent
         this.tweet.setParty(Party.remove);
         this.tweet = this.controller.getNextTweet();
         this.update();
+        this.controller.save();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

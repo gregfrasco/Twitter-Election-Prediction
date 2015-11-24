@@ -5,10 +5,31 @@
  */
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author frascog
  */
-public enum DataSets {
-    presidential2008;
+public class DataSets {
+    
+    public static List<String> dataSets;
+
+    public DataSets() {
+        dataSets =new ArrayList<String>();
+        dataSets.add("presidential2008");
+    }
+    
+    public static void add(String name){
+        dataSets.add(name);
+    }
+    
+    public static Object[] values(){
+        if(dataSets == null){
+            new DataSets();
+        }
+        return dataSets.toArray();
+    }
+    
 }

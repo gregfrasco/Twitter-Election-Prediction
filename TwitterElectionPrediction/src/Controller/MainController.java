@@ -6,6 +6,8 @@
 package Controller;
 
 import Model.DataSets;
+import Model.Party;
+import Model.Tweet;
 import Views.MainView;
 import java.awt.BorderLayout;
 import java.io.File;
@@ -21,7 +23,7 @@ import javax.swing.JFrame;
 public class MainController {
 
     private MainView mainView;
-    private DataSets currentDataSet;
+    private String currentDataSet;
     private DataController dataController;
     private HandClassifyController handClassifyController;
 
@@ -41,6 +43,10 @@ public class MainController {
     }
 
     public void openHandClassifier() {
+        if(currentDataSet == null){
+            currentDataSet = this.mainView.getCurrentDataSet();
+        }
+        
         if(handClassifyController == null){
             try {
                 this.handClassifyController = new HandClassifyController(this.dataController.getData(currentDataSet));
@@ -56,16 +62,39 @@ public class MainController {
         frame.setVisible(true);
     }
 
-    public DataSets getCurrentDataSet() {
+    public String getCurrentDataSet() {
         return currentDataSet;
     }
 
-    public void setCurrentDataSet(DataSets currentDataSet) {
+    public void setCurrentDataSet(String currentDataSet) {
         this.currentDataSet = currentDataSet;
     }
 
     public void openFile(File selectedFile) {
-        
+        DataSets.add(selectedFile.getName());
+        this.dataController.openData(selectedFile.getName(),selectedFile);
+        this.mainView.update();
+    }
+
+    public void removeExtra() throws FileNotFoundException {
+        for (int i = 0; i < this.dataController.getData(currentDataSet).size(); i++) {
+            Tweet tweet = this.dataController.getData(currentDataSet).get(i);
+            if(tweet.getParty() == Party.remove){
+                this.dataController.getData(currentDataSet).remove(tweet);
+            }
+        }   
+    }
+
+    public void save() throws FileNotFoundException {
+        this.dataController.getData(currentDataSet).save(this.dataController.getFile(currentDataSet));
+    }
+
+    public void bagOfWords() {
+        try {
+            this.getDataController().getData(currentDataSet).demRebClassify();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

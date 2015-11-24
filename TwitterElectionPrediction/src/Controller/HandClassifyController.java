@@ -54,8 +54,20 @@ public class HandClassifyController {
     }
 
     public void save() {
-        String filePath = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath().concat("/Desktop/twitterData.csv");
+        String filePath = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath().concat("/twitterData.csv");
         this.dataSet.save(new File(filePath));
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public Tweet get(int index) {
+        return this.dataSet.get(index);
+    }
+
+    public void remove(int index) {
+        this.dataSet.remove(this.get(index));
     }
     
 }
