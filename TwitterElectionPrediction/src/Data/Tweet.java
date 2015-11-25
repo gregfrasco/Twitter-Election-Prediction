@@ -5,20 +5,6 @@
  */
 package Data;
 
-import java.util.Date;
-import twitter4j.ExtendedMediaEntity;
-import twitter4j.GeoLocation;
-import twitter4j.HashtagEntity;
-import twitter4j.MediaEntity;
-import twitter4j.Place;
-import twitter4j.RateLimitStatus;
-import twitter4j.Scopes;
-import twitter4j.Status;
-import twitter4j.SymbolEntity;
-import twitter4j.URLEntity;
-import twitter4j.User;
-import twitter4j.UserMentionEntity;
-
 /**
  *
  * @author frascog
@@ -60,6 +46,14 @@ public class Tweet{
     
     public boolean isNeutral() {
         return group.equals(Group.neutral);
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Group getGroup() {
+        return group;
     }
     
 }
