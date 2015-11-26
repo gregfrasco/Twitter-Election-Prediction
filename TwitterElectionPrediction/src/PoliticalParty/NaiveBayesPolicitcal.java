@@ -103,13 +103,17 @@ public class NaiveBayesPolicitcal {
             case democrat:
                 words = tweet.getMessage().split(" ");
                 for (String word : words) {
-                    value += Math.log(pWordGiven(word, Party.democrat));
+                    if(pWordGiven(word, Party.democrat) > 0){
+                        value += Math.log(pWordGiven(word, Party.democrat));
+                    }
                 }
                 return value;
             case republican:
                 words = tweet.getMessage().split(" ");
                 for (String word : words) {
-                    value += Math.log(pWordGiven(word, Party.republican));
+                    if(pWordGiven(word, Party.republican) > 0){
+                        value += Math.log(pWordGiven(word, Party.republican));
+                    }
                 }
                 return value;
         }
