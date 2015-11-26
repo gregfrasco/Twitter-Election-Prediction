@@ -42,6 +42,10 @@ public class NaiveBayes {
         this.count();
     }
 
+    public NaiveBayes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private void count() {
         for (Tweet tweet : tweets) {
             if (tweet.isPositive()) {
