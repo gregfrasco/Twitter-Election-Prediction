@@ -8,7 +8,7 @@ package Test;
 import Data.Data;
 import Data.Sentiment;
 import Data.Tweet;
-import SentimentAnalysis.NaiveBayes;
+import SentimentAnalysis.NaiveBayesSentiment;
 
 /**
  *
@@ -21,7 +21,7 @@ public class NaiveBayesTrianing {
      */
     public static void main(String[] args) {
         Data data = new Data();
-        NaiveBayes naiveBayes = new NaiveBayes(data.getSentimentTweets());
+        NaiveBayesSentiment naiveBayes = new NaiveBayesSentiment(data.getSentimentTweets());
         int positive = 0;
         int negitive = 0;
         int neural = 0;

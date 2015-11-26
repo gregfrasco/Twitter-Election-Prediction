@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author frascog
  */
-public class NaiveBayes {
+public class NaiveBayesSentiment {
 
     private int postitve = 0;
     private int negitve = 0;
@@ -31,7 +31,7 @@ public class NaiveBayes {
     private HashMap<String,Integer> positiveWords;
     private HashMap<String,Integer> negitiveWords;
 
-    public NaiveBayes(List<Tweet> tweets) {
+    public NaiveBayesSentiment(List<Tweet> tweets) {
         this.tweets = tweets;
         
         this.positiveTweets = new ArrayList<Tweet>();
@@ -42,7 +42,7 @@ public class NaiveBayes {
         this.count();
     }
 
-    public NaiveBayes() {
+    public NaiveBayesSentiment() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -8,7 +8,7 @@ package Test;
 import Data.Data;
 import Data.Tweet;
 import PoliticalParty.NaiveBayesPolicitcal;
-import SentimentAnalysis.NaiveBayes;
+import SentimentAnalysis.NaiveBayesSentiment;
 import java.util.List;
 import twitter4j.Query;
 import twitter4j.QueryResult;

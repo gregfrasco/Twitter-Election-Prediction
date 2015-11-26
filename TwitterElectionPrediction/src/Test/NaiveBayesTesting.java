@@ -7,7 +7,7 @@ package Test;
 
 import Data.Data;
 import Data.Tweet;
-import SentimentAnalysis.NaiveBayes;
+import SentimentAnalysis.NaiveBayesSentiment;
 import java.util.List;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -27,7 +27,7 @@ public class NaiveBayesTesting {
      */
     public static void main(String[] args) {
         Data data = new Data();
-        NaiveBayes bayes = new NaiveBayes(data.getSentimentTweets());
+        NaiveBayesSentiment bayes = new NaiveBayesSentiment(data.getSentimentTweets());
         Twitter twitter = new TwitterFactory().getInstance();
         try {
             Query query = new Query("Obama");
