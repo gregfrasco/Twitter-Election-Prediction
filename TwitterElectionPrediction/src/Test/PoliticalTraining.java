@@ -5,10 +5,9 @@
  */
 package Test;
 
-import Data.PoliticalData;
+import Data.Data;
 import Data.Tweet;
 import PoliticalParty.NaiveBayesPolicitcal;
-import twitter4j.Status;
 
 /**
  *
@@ -21,16 +20,15 @@ public class PoliticalTraining {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        PoliticalData data = new PoliticalData();
-        data.loadData();
-        NaiveBayesPolicitcal bayes = new NaiveBayesPolicitcal(data.getTweets());
+        Data data = new Data();
+        NaiveBayesPolicitcal bayes = new NaiveBayesPolicitcal(data.getPartyTweets());
         int count = 0;
-        for (Tweet tweet : data.getTweets()) {
+        for (Tweet tweet : data.getPartyTweets()) {
             if(bayes.classify(tweet).equals(tweet.getParty())){
                 count += 1;
             }
         }
-        System.out.println(count / ((1.0) * data.getTweets().size()));
+        System.out.println(count / ((1.0) * data.getPartyTweets().size()));
     }
     
 }

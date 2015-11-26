@@ -6,7 +6,6 @@
 package Test;
 
 import Data.Data;
-import Data.PoliticalData;
 import Data.Tweet;
 import PoliticalParty.NaiveBayesPolicitcal;
 import SentimentAnalysis.NaiveBayes;
@@ -28,9 +27,8 @@ public class PoliciticalTesting {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        PoliticalData data = new PoliticalData();
-        data.loadData();
-        NaiveBayesPolicitcal bayes = new NaiveBayesPolicitcal(data.getTweets());
+        Data data = new Data();
+        NaiveBayesPolicitcal bayes = new NaiveBayesPolicitcal(data.getPartyTweets());
         Twitter twitter = new TwitterFactory().getInstance();
         try {
             Query query = new Query("Trump");

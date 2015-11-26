@@ -27,8 +27,7 @@ public class NaiveBayesTesting {
      */
     public static void main(String[] args) {
         Data data = new Data();
-        data.loadData();
-        NaiveBayes bayes = new NaiveBayes(data.getTweets());
+        NaiveBayes bayes = new NaiveBayes(data.getSentimentTweets());
         Twitter twitter = new TwitterFactory().getInstance();
         try {
             Query query = new Query("Obama");

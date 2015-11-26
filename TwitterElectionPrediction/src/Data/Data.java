@@ -20,14 +20,19 @@ import java.util.logging.Logger;
  */
 public class Data {
     
-    private String filePath = "src/rawData/training.csv";
-    private List<Tweet> tweets;
+    private String filePathSentiment = "src/rawData/training.csv";
+    private List<Tweet> sentimentTweets;
+    private String filePathParty = "src/rawData/PartyClassification.csv";
+    private List<Tweet> partyTweets;
 
     public Data() {
-        this.tweets = new ArrayList<Tweet>();
+        this.partyTweets = new ArrayList<Tweet>();
+        this.sentimentTweets = new ArrayList<Tweet>();
+        this.loadDataParty(filePathParty);
+        this.loadDataSentiment(filePathSentiment);
     }
     
-    public void loadData() {
+    private void loadDataSentiment(String filePath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = "";
@@ -35,16 +40,16 @@ public class Data {
                 line = line.replaceAll("^[^a-zA-Z0-9\\s]+|[^a-zA-Z0-9\\s]+$", "");
                 line = line.replaceAll("\"", "");
                 String[] data = line.split(",");
-                Group group = null;
+                Sentiment group = null;
                 if(data[0].equals("4")){
-                    group = Group.positive;
+                    group = Sentiment.positive;
                 } else if(data[0].equals("2")){
-                    group = Group.neutral;
+                    group = Sentiment.neutral;
                 }else if(data[0].equals("0")){
-                    group = Group.negitive;
+                    group = Sentiment.negitive;
                 }
                 data = shortenExtraText(data);
-                tweets.add(new Tweet(data[5], group));
+                sentimentTweets.add(new Tweet(data[5], group));
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,8 +71,38 @@ public class Data {
         return data;
     }
 
-    public List<Tweet> getTweets() {
-        return tweets;
+    private void loadDataParty(String filePath) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            String line = "";
+            while((line = br.readLine()) != null){
+                line = line.replaceAll("^[^a-zA-Z0-9\\s]+|[^a-zA-Z0-9\\s]+$", "");
+                line = line.replaceAll("\"", "");
+                String[] data = line.split(",");
+                Party group = null;
+                if(data[0].equals("Democrats")){
+                    group = Party.democrat;
+                } else if(data[0].equals("Republican")){
+                    group = Party.republican;
+                }
+                if(group != null){
+                    this.partyTweets.add(new Tweet(data[1], group));
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ArrayIndexOutOfBoundsException ex){
+            
+        }
     }
     
+    public List<Tweet> getSentimentTweets() {
+        return this.sentimentTweets;
+    }
+    
+    public List<Tweet> getPartyTweets() {
+        return this.partyTweets;
+    }
 }

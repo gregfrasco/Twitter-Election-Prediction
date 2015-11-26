@@ -5,7 +5,7 @@
  */
 package SentimentAnalysis;
 
-import Data.Group;
+import Data.Sentiment;
 import Data.Tweet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +82,7 @@ public class NaiveBayes {
         }
     }
 
-    private double pWordGiven(String word, Group group) {
+    private double pWordGiven(String word, Sentiment group) {
         double value = 0;
         switch (group) {
             case positive:
@@ -101,27 +101,27 @@ public class NaiveBayes {
         return 0;
     }
 
-    public double pTweetGiven(Tweet tweet, Group group) {
+    public double pTweetGiven(Tweet tweet, Sentiment group) {
         double value = 0;
         String[] words;
         switch (group) {
             case positive:
                 words = tweet.getMessage().split(" ");
                 for (String word : words) {
-                    value += Math.log(pWordGiven(word, Group.positive));
+                    value += Math.log(pWordGiven(word, Sentiment.positive));
                 }
                 return value;
             case negitive:
                 words = tweet.getMessage().split(" ");
                 for (String word : words) {
-                    value += Math.log(pWordGiven(word, Group.negitive));
+                    value += Math.log(pWordGiven(word, Sentiment.negitive));
                 }
                 return value;
         }
         return 0;
     }
 
-    public double groupGivenText(Group group,Tweet tweet){
+    public double groupGivenText(Sentiment group,Tweet tweet){
         switch(group){
             case positive:
                 return pTweetGiven(tweet, group) + Math.log(pOfPositive);
@@ -131,18 +131,18 @@ public class NaiveBayes {
         return 0;
     }
     
-    public Group classify(Tweet tweet){
-        Group classify = Group.neutral;
-        double pOfPostitive = groupGivenText(Group.positive, tweet);
-        double pOfNegitive = groupGivenText(Group.negitive, tweet);
+    public Sentiment classify(Tweet tweet){
+        Sentiment classify = Sentiment.neutral;
+        double pOfPostitive = groupGivenText(Sentiment.positive, tweet);
+        double pOfNegitive = groupGivenText(Sentiment.negitive, tweet);
         //double support = (pOfPostitive * this.pOfPositive) + (pOfNegitive * this.pOfNegitve);
         double support = 1;
         pOfPostitive /= support;
         pOfNegitive /= support;
         if(pOfPostitive > pOfNegitive){
-            classify = Group.positive;
+            classify = Sentiment.positive;
         } else {
-            classify = Group.negitive;
+            classify = Sentiment.negitive;
         }
         return classify;
     }

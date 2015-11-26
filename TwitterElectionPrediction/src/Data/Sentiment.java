@@ -9,7 +9,7 @@ package Data;
  *
  * @author frascog
  */
-public enum Group {
+public enum Sentiment {
     positive,
     negitive,
     neutral;

@@ -11,12 +11,13 @@ import twitter4j.Status;
  *
  * @author frascog
  */
-public class Tweet{
+public class Tweet {
     
-    private String author;
     private String message;
-    private Group group;
+    private String author;
+    private Sentiment sentiment;
     private Party party;
+    private Party classification;
 
     public Tweet(String tweet) {
       this.message = tweet;
@@ -27,15 +28,15 @@ public class Tweet{
         this.message = message;
     }
 
-    public Tweet(String message, Group group) {
+    public Tweet(String message, Sentiment group) {
         this.message = message;
-        this.group = group;
+        this.sentiment = group;
     }
 
-    public Tweet(String author, String message, Group group) {
+    public Tweet(String author, String message, Sentiment group) {
         this.author = author;
         this.message = message;
-        this.group = group;
+        this.sentiment = group;
     } 
 
     public Tweet(String message, Party party) {
@@ -49,10 +50,10 @@ public class Tweet{
         this.party = party;
     }
 
-    public Tweet(String author, String message, Group group, Party party) {
+    public Tweet(String author, String message, Sentiment group, Party party) {
         this.author = author;
         this.message = message;
-        this.group = group;
+        this.sentiment = group;
         this.party = party;
     }
     
@@ -62,23 +63,23 @@ public class Tweet{
     }
 
     public boolean isPositive() {
-        return group.equals(Group.positive);
+        return sentiment.equals(Sentiment.positive);
     }
     
     public boolean isNegitive() {
-        return group.equals(Group.negitive);
+        return sentiment.equals(Sentiment.negitive);
     }
     
     public boolean isNeutral() {
-        return group.equals(Group.neutral);
+        return sentiment.equals(Sentiment.neutral);
     }
 
     public String getMessage() {
         return message;
     }
 
-    public Group getGroup() {
-        return group;
+    public Sentiment getSentiment() {
+        return sentiment;
     }
 
     public void setAuthor(String author) {
@@ -89,8 +90,8 @@ public class Tweet{
         this.message = message;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setSentiment(Sentiment sentiment) {
+        this.sentiment = sentiment;
     }
 
     public void setParty(Party party) {
@@ -108,5 +109,27 @@ public class Tweet{
     public Party getParty(){
         return this.party;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public Party getClassification() {
+        this.checkClassification();
+        return classification;
+    }
     
+    private Party checkClassification(){
+        if(this.isDemocrat() && this.isPositive()){
+            return this.classification = Party.democrat;
+        } else if(this.isDemocrat() && this.isNegitive()){
+            return this.classification = Party.republican;
+        } else if(this.isRepbulicain() && this.isPositive()){
+            return this.classification = Party.republican;
+        } else if(this.isRepbulicain() && this.isNegitive()){
+            return this.classification = Party.democrat;
+        }
+        return party;
+    }
+
 }
