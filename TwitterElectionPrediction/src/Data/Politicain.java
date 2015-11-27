@@ -6,6 +6,7 @@
 package Data;
 
 import Views.PoliticianView;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class Politicain {
         this.name = name;
         this.picture = picture;
         this.party = party;
+        this.listeners = new ArrayList<PoliticainListener>();
     }
 
     public String getName() {

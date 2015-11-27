@@ -5,6 +5,11 @@
  */
 package Views;
 
+import Data.Party;
+import Data.Politicain;
+import Data.Politicians;
+import java.awt.GridLayout;
+
 /**
  *
  * @author frascog
@@ -16,6 +21,7 @@ public class MainView extends javax.swing.JPanel {
      */
     public MainView() {
         initComponents();
+        initMyComponents();
     }
 
     /**
@@ -105,4 +111,13 @@ public class MainView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanelTweets;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
+
+    private void initMyComponents() {
+        this.jPanelCanidents.setLayout(new GridLayout(0, 5, 0, 5));
+        Politicians politicians = new Politicians();
+        for (Politicain pol : politicians.getPoliticains()) {
+           this.jPanelCanidents.add(pol.getView());
+        }
+        
+    }
 }
