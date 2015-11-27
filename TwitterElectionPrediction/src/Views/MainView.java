@@ -5,6 +5,7 @@
  */
 package Views;
 
+import Data.Classifier;
 import Data.Party;
 import Data.Politicain;
 import Data.Politicians;
@@ -118,6 +119,7 @@ public class MainView extends javax.swing.JPanel {
         for (Politicain pol : politicians.getPoliticains()) {
            this.jPanelCanidents.add(pol.getView());
         }
-        
+        Classifier classifier = new Classifier(politicians.getPoliticains().get(0), "Clinton");
+        classifier.start();
     }
 }

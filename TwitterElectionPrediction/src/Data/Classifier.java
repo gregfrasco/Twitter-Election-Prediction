@@ -19,7 +19,7 @@ import twitter4j.TwitterFactory;
  *
  * @author frascog
  */
-public class Classifier {
+public class Classifier implements Runnable{
     
     private Politicain politicain;
     private String query;
@@ -32,18 +32,19 @@ public class Classifier {
         Data data = new Data();
         bayesPolicitcal = new NaiveBayesPolicitcal(data.getPartyTweets());
         bayesSentiment = new NaiveBayesSentiment(data.getSentimentTweets());
+        //getTweets();
     }
     
     private void getTweets(){
     Twitter twitter = new TwitterFactory().getInstance();
         try {
-            Query query = new Query("Trump");
+            Query query = new Query(this.query);
             QueryResult result;
             do {
                 result = twitter.search(query);
                 List<Status> tweets = result.getTweets();
                 for (Status tweet : tweets) {
-                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    this.addTweet(this.bayesSentiment.classify(new Tweet(tweet)),this.bayesPolicitcal.classify(new Tweet(tweet)),new Tweet(tweet));
                 }
             } while ((query = result.nextQuery()) != null);
             System.exit(0);
@@ -53,6 +54,20 @@ public class Classifier {
             System.exit(-1);
         }
     }
+
+    private void addTweet(Sentiment sentiment, Party party, Tweet tweet) {
+        tweet.setParty(party);
+        tweet.setSentiment(sentiment);
+        this.politicain.addTweet(tweet);
+    }
+
+    @Override
+    public void run() {
+        getTweets();
+    }
     
-    
+    public void start(){
+        Thread thread = new Thread(this);
+        thread.start();
+    }
 }

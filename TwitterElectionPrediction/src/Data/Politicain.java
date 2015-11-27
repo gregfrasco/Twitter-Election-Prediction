@@ -30,6 +30,10 @@ public class Politicain {
         this.picture = picture;
         this.party = party;
         this.listeners = new ArrayList<PoliticainListener>();
+        this.positiveDemocrat = new ArrayList<Tweet>();
+        this.negitiveDemocrat = new ArrayList<Tweet>();
+        this.positiveRepublicain = new ArrayList<Tweet>();
+        this.negitiveRepublicain = new ArrayList<Tweet>();
     }
 
     public String getName() {
@@ -112,5 +116,9 @@ public class Politicain {
                 this.listeners.remove(this.view);
             }
         }
+    }
+
+    public void addTweet(Tweet tweet) {
+        this.addTweet(tweet.getSentiment(), tweet.getParty(), tweet);
     }
 }
