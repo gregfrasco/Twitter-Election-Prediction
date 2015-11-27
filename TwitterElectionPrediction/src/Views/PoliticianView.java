@@ -6,12 +6,14 @@
 package Views;
 
 import Data.Politicain;
+import Data.PoliticainListener;
+import javax.swing.JPanel;
 
 /**
  *
  * @author frascog
  */
-public class PoliticianView extends javax.swing.JPanel {
+public class PoliticianView extends JPanel implements PoliticainListener{
 
     private Politicain politicain;
     public PoliticianView(Politicain Politicain) {
@@ -84,5 +86,10 @@ public class PoliticianView extends javax.swing.JPanel {
 
     private void initMyComponents() {
     
+    }
+
+    @Override
+    public void politicainChangeResponce() {
+       
     }
 }
