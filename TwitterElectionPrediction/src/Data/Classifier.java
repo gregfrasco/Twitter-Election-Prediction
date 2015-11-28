@@ -24,16 +24,16 @@ import twitter4j.TwitterFactory;
  *
  * @author frascog
  */
-public class Classifier implements Runnable{
+public class Classifier {
     
-    private Politicians politicains;
-    private NaiveBayesPolicitcal bayesPolicitcal;
-    private NaiveBayesSentiment bayesSentiment;
-    private Thread thread;
-    private String filePath = "src/rawData/testing.csv";
+    private static Classifier classifier = new Classifier();
+    
+    private static Politicians politicains = new Politicians();
+    private static NaiveBayesPolicitcal bayesPolicitcal;
+    private static NaiveBayesSentiment bayesSentiment;
+    private static String filePath = "src/rawData/testing.csv";
 
-    public Classifier(Politicians politicains) {
-        this.politicains = politicains;
+    private Classifier() {
         Data data = new Data();
         bayesPolicitcal = new NaiveBayesPolicitcal(data.getPartyTweets());
         bayesSentiment = new NaiveBayesSentiment(data.getSentimentTweets());
@@ -66,25 +66,26 @@ public class Classifier implements Runnable{
         }
     }
 
-    private void addTweet(Politicain politicain,Sentiment sentiment, Party party, Tweet tweet) {
-        tweet.setParty(party);
-        tweet.setSentiment(sentiment);
-        politicain.addTweet(tweet);
-    }
-
-    @Override
-    public void run() {
-        for (Politicain politicain : this.politicains.getPoliticains()) {
-            this.getTweets(politicain);
-        }
+//    @Override
+//    public void run() {
+//        for (Politicain politicain : this.politicains.getPoliticains()) {
+//            this.getTweets(politicain);
+//        }
+//    }
+    
+    public static Tweet classify(String message){
+        Tweet tweet = new Tweet(message);
+        tweet.setParty(Classifier.bayesPolicitcal.classify(tweet));
+        tweet.setSentiment(Classifier.bayesSentiment.classify(tweet));
+        return tweet;
     }
     
-    public Tweet classify(String message){
-        
-    }
+//    public static void start(){
+//        Classifier.thread.run();
+//        Classifier.politicains.loadData();
+//    }
     
-    public void start(){
-        this.thread = new Thread(this, "Classifier");
-        this.thread.run();
+    public static Classifier getInstance(){
+        return classifier;
     }
 }

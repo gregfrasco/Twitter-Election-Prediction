@@ -43,13 +43,13 @@ public class Politicians {
     
     public void loadData(){
         try {
-            Classifier classifier = new Classifier(this);
+            Classifier classifier = Classifier.getInstance();
             BufferedReader br = new BufferedReader(new FileReader("src/rawdata/testing.csv"));
             String line = "";
             while((line = br.readLine()) != null){
                 String[] words = line.split(",");
                 if(words[0] == "Hillary Clinton"){
-                    this.politicains.get(0).addTweet(new Tweet);
+                    this.politicains.get(0).addTweet(classifier.classify(words[1]));
                 }
             }
         } catch (FileNotFoundException ex) {

@@ -119,7 +119,6 @@ public class MainView extends javax.swing.JPanel {
         for (Politicain pol : politicians.getPoliticains()) {
            this.jPanelCanidents.add(pol.getView());
         }
-        this.classifier = new Classifier(politicians);
-        classifier.start();
+        this.classifier = Classifier.getInstance();
     }
 }
