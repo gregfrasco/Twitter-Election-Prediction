@@ -48,8 +48,16 @@ public class Politicians {
             String line = "";
             while((line = br.readLine()) != null){
                 String[] words = line.split(",");
-                if(words[0] == "Hillary Clinton"){
+                if(words[0].equals("Hillary Clinton")){
                     this.politicains.get(0).addTweet(classifier.classify(words[1]));
+                } else if(words[0].equals("Bernie Sanders")){
+                    this.politicains.get(1).addTweet(classifier.classify(words[1]));
+                } else if(words[0].equals("Donald Trump")){
+                    this.politicains.get(2).addTweet(classifier.classify(words[1]));
+                } else if(words[0].equals("Ben Carson")){
+                    this.politicains.get(3).addTweet(classifier.classify(words[1]));
+                } else if(words[0].equals("Marco Rubio")){
+                    this.politicains.get(4).addTweet(classifier.classify(words[1]));
                 }
             }
         } catch (FileNotFoundException ex) {

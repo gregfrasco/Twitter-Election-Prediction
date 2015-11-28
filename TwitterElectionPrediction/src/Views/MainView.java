@@ -114,11 +114,12 @@ public class MainView extends javax.swing.JPanel {
 
     private void initMyComponents() {
         this.jPanelCanidents.setLayout(new GridLayout(0, 5, 0, 5));
-        this.politicians = new Politicians();
-        
+        this.classifier = Classifier.getInstance();
+        this.classifier.classify();
+        this.politicians = classifier.getPoliticains();
         for (Politicain pol : politicians.getPoliticains()) {
            this.jPanelCanidents.add(pol.getView());
         }
-        this.classifier = Classifier.getInstance();
+
     }
 }
