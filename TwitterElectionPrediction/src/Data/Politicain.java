@@ -24,8 +24,9 @@ public class Politicain {
     private final Party party;
     private PoliticianView view;
     private List<PoliticainListener> listeners;
+    private String query;
 
-    public Politicain(String name, String picture, Party party) {
+    public Politicain(String name, String picture, Party party,String query) {
         this.name = name;
         this.picture = picture;
         this.party = party;
@@ -34,6 +35,7 @@ public class Politicain {
         this.negitiveDemocrat = new ArrayList<Tweet>();
         this.positiveRepublicain = new ArrayList<Tweet>();
         this.negitiveRepublicain = new ArrayList<Tweet>();
+        this.query = query;
     }
 
     public String getName() {
@@ -121,4 +123,9 @@ public class Politicain {
     public void addTweet(Tweet tweet) {
         this.addTweet(tweet.getSentiment(), tweet.getParty(), tweet);
     }
+
+    public String getQuery() {
+        return query;
+    }
+   
 }

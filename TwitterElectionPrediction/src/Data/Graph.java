@@ -48,4 +48,8 @@ public class Graph {
     private JFreeChart makeGraph() {
         return ChartFactory.createBarChart("Political View", "Party", "Tweets", createDataset(), PlotOrientation.VERTICAL,false, false, false);
     }
+
+    public void update() {
+        this.barChart = makeGraph();
+    }
 }

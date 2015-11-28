@@ -10,7 +10,6 @@ import Data.Politicain;
 import Data.PoliticainListener;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -110,13 +109,10 @@ public class PoliticianView extends JPanel implements PoliticainListener{
         String party = this.politicain.getParty().toString();
         this.jLabel3.setText(party.substring(0, 1).toUpperCase() + party.substring(1));
         this.jLabel3.setHorizontalAlignment(SwingConstants.CENTER);
-        
     }
 
     @Override
     public void politicainChangeResponce() {
-       this.jPanel1.removeAll();
-       this.jPanel1.add(this.graph.getGraph());
-       this.jPanel1.validate();
+       this.graph.update();
     }
 }

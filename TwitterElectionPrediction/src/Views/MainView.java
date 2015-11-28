@@ -6,7 +6,6 @@
 package Views;
 
 import Data.Classifier;
-import Data.Party;
 import Data.Politicain;
 import Data.Politicians;
 import java.awt.GridLayout;
@@ -17,9 +16,9 @@ import java.awt.GridLayout;
  */
 public class MainView extends javax.swing.JPanel {
 
-    /**
-     * Creates new form MainView
-     */
+    private Politicians politicians;
+    private Classifier classifier;
+    
     public MainView() {
         initComponents();
         initMyComponents();
@@ -115,11 +114,12 @@ public class MainView extends javax.swing.JPanel {
 
     private void initMyComponents() {
         this.jPanelCanidents.setLayout(new GridLayout(0, 5, 0, 5));
-        Politicians politicians = new Politicians();
+        this.politicians = new Politicians();
+        
         for (Politicain pol : politicians.getPoliticains()) {
            this.jPanelCanidents.add(pol.getView());
         }
-        Classifier classifier = new Classifier(politicians.getPoliticains().get(0), "Clinton");
+        this.classifier = new Classifier(politicians);
         classifier.start();
     }
 }
