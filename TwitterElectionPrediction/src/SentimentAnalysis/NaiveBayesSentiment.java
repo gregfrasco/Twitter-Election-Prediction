@@ -186,12 +186,10 @@ public class NaiveBayesSentiment implements Runnable{
     }
 
     public double getResubstitutionError() {
-        this.error();
         return resubstitutionError;
     }
 
     public double getTenCrossFold() {
-        this.error();
         return tenCrossFold;
     }
 

@@ -25,7 +25,7 @@ public class Classifier {
         bayesPolicitcal = new NaiveBayesPolicitcal(data.getPartyTweets());
         bayesSentiment = new NaiveBayesSentiment(data.getSentimentTweets());
         testingData = new TestingData();
-        testingData.start();
+        //testingData.start();
     }
     
     public Tweet classify(String message){

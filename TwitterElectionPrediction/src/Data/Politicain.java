@@ -63,18 +63,33 @@ public class Politicain {
     }
 
     public void addTweet(Sentiment sentiment,Party party,Tweet tweet){
-        if(sentiment.equals(Sentiment.positive)){
+        if(this.party.equals(Party.democrat)){
             if(party.equals(Party.democrat)){
-                this.positiveDemocrat.add(tweet);
+                if(sentiment.equals(Sentiment.positive)){
+                    this.negitiveDemocrat.add(tweet);
+                } else {
+                    this.positiveDemocrat.add(tweet);
+                }
             } else {
-                this.positiveRepublicain.add(tweet);
+                if(sentiment.equals(Sentiment.positive)){
+                    this.positiveRepublicain.add(tweet);
+                } else {
+                    this.negitiveRepublicain.add(tweet);
+                }
             }
-        }
-        if(sentiment.equals(Sentiment.negitive)){
+        } else {
             if(party.equals(Party.democrat)){
-                this.negitiveDemocrat.add(tweet);
+                if(sentiment.equals(Sentiment.positive)){
+                    this.positiveDemocrat.add(tweet);
+                } else {
+                    this.negitiveDemocrat.add(tweet);
+                }
             } else {
-                this.negitiveRepublicain.add(tweet);
+                if(sentiment.equals(Sentiment.positive)){
+                    this.negitiveRepublicain.add(tweet);
+                } else {
+                    this.positiveRepublicain.add(tweet);
+                }
             }
         }
         this.fireUpdate();

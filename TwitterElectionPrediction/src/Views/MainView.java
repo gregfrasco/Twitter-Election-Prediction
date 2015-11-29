@@ -8,7 +8,9 @@ package Views;
 import Data.Classifier;
 import Data.Politicain;
 import Data.Politicians;
+import Data.SentimentGraph;
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -36,6 +38,7 @@ public class MainView extends javax.swing.JPanel implements Runnable{
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanelCanidents = new javax.swing.JPanel();
         jPanelTweets = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jPanelClass = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -62,15 +65,32 @@ public class MainView extends javax.swing.JPanel implements Runnable{
 
         jTabbedPane1.addTab("Canidents", jPanelCanidents);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 988, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 316, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanelTweetsLayout = new javax.swing.GroupLayout(jPanelTweets);
         jPanelTweets.setLayout(jPanelTweetsLayout);
         jPanelTweetsLayout.setHorizontalGroup(
             jPanelTweetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGroup(jPanelTweetsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelTweetsLayout.setVerticalGroup(
             jPanelTweetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 518, Short.MAX_VALUE)
+            .addGroup(jPanelTweetsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Tweets", jPanelTweets);
@@ -190,6 +210,7 @@ public class MainView extends javax.swing.JPanel implements Runnable{
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelCanidents;
     private javax.swing.JPanel jPanelClass;
     private javax.swing.JPanel jPanelSettings;
@@ -208,23 +229,35 @@ public class MainView extends javax.swing.JPanel implements Runnable{
         Thread sent = new Thread(classifier.getBayesSentiment());
         sent.start();
         
-        Thread poil = new Thread(classifier.getBayesSentiment());
+        Thread poil = new Thread(classifier.getBayesPolicitcal());
         poil.start();
+        
+        Thread update = new Thread(this);
+        update.start();
+        
+        jPanel1.setLayout(new GridLayout(0, 2,0,2));
+        SentimentGraph sentimentGraph = new SentimentGraph();
+        jPanel1.add(sentimentGraph.getGraph());
     }
 
     @Override
     public void run() {
-        while(true){
+        boolean done1 = false;
+        boolean done2 = false;
+        while(!done1 || !done2){
             if(this.classifier.getBayesPolicitcal().getTenCrossFold() > 0){
-                if(this.classifier.getBayesSentiment().getTenCrossFold() > 0){
-                    break;
-                }
+                double resub = this.classifier.getBayesPolicitcal().getResubstitutionError();
+                DecimalFormat df = new DecimalFormat("#.####");
+                this.jLabel3.setText(df.format(resub)+ "%");
+                double tenCross = this.classifier.getBayesPolicitcal().getTenCrossFold();
+                this.jLabel5.setText(df.format(tenCross) + "%");
+                done1 = true;
+            }
+            if(this.classifier.getBayesSentiment().getTenCrossFold() > 0){
+                this.jLabel9.setText(this.classifier.getBayesSentiment().getResubstitutionError()+ "%");
+                this.jLabel10.setText(this.classifier.getBayesSentiment().getTenCrossFold() + "%");
+                done2 = true;
             }
         }
-        this.jLabel3.setText(this.classifier.getBayesPolicitcal().getResubstitutionError()+ "%");
-        this.jLabel5.setText(this.classifier.getBayesPolicitcal().getTenCrossFold() + "%");
-        
-        this.jLabel9.setText(this.classifier.getBayesSentiment().getResubstitutionError()+ "%");
-        this.jLabel10.setText(this.classifier.getBayesSentiment().getTenCrossFold() + "%");
     }
 }
