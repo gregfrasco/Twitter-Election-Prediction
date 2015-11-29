@@ -14,7 +14,7 @@ import java.awt.GridLayout;
  *
  * @author frascog
  */
-public class MainView extends javax.swing.JPanel {
+public class MainView extends javax.swing.JPanel implements Runnable{
 
     private Politicians politicians;
     private Classifier classifier;
@@ -37,6 +37,16 @@ public class MainView extends javax.swing.JPanel {
         jPanelCanidents = new javax.swing.JPanel();
         jPanelTweets = new javax.swing.JPanel();
         jPanelClass = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanelSettings = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanelCanidentsLayout = new javax.swing.GroupLayout(jPanelCanidents);
@@ -65,15 +75,80 @@ public class MainView extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Tweets", jPanelTweets);
 
+        jLabel1.setText("Political Classification:");
+
+        jLabel2.setText("Resubstitution Error:");
+
+        jLabel3.setText("Loading...");
+
+        jLabel4.setText("10 cross fold validation:");
+
+        jLabel5.setText("Loading...");
+
+        jLabel6.setText("Sentiment Classification:");
+
+        jLabel7.setText("Resubitution Error:");
+
+        jLabel8.setText("10 cross fold validation:");
+
+        jLabel9.setText("Loading...");
+
+        jLabel10.setText("Loading...");
+
         javax.swing.GroupLayout jPanelClassLayout = new javax.swing.GroupLayout(jPanelClass);
         jPanelClass.setLayout(jPanelClassLayout);
         jPanelClassLayout.setHorizontalGroup(
             jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGroup(jPanelClassLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanelClassLayout.createSequentialGroup()
+                        .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanelClassLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel7)))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelClassLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5)))
+                            .addGroup(jPanelClassLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel10)))))
+                .addContainerGap(759, Short.MAX_VALUE))
         );
         jPanelClassLayout.setVerticalGroup(
             jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 518, Short.MAX_VALUE)
+            .addGroup(jPanelClassLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel10))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Classification", jPanelClass);
@@ -105,6 +180,16 @@ public class MainView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanelCanidents;
     private javax.swing.JPanel jPanelClass;
     private javax.swing.JPanel jPanelSettings;
@@ -120,6 +205,26 @@ public class MainView extends javax.swing.JPanel {
         for (Politicain pol : politicians.getPoliticains()) {
            this.jPanelCanidents.add(pol.getView());
         }
+        Thread sent = new Thread(classifier.getBayesSentiment());
+        sent.start();
+        
+        Thread poil = new Thread(classifier.getBayesSentiment());
+        poil.start();
+    }
 
+    @Override
+    public void run() {
+        while(true){
+            if(this.classifier.getBayesPolicitcal().getTenCrossFold() > 0){
+                if(this.classifier.getBayesSentiment().getTenCrossFold() > 0){
+                    break;
+                }
+            }
+        }
+        this.jLabel3.setText(this.classifier.getBayesPolicitcal().getResubstitutionError()+ "%");
+        this.jLabel5.setText(this.classifier.getBayesPolicitcal().getTenCrossFold() + "%");
+        
+        this.jLabel9.setText(this.classifier.getBayesSentiment().getResubstitutionError()+ "%");
+        this.jLabel10.setText(this.classifier.getBayesSentiment().getTenCrossFold() + "%");
     }
 }

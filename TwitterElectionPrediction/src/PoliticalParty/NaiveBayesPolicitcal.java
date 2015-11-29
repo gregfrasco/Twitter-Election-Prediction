@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author frascog
  */
-public class NaiveBayesPolicitcal {
+public class NaiveBayesPolicitcal implements Runnable{
 
     private int democrat = 0;
     private int republican = 0;
@@ -31,6 +31,9 @@ public class NaiveBayesPolicitcal {
     private HashMap<String, Integer> democratWords;
     private HashMap<String, Integer> republicanWords;
 
+    private double resubstitutionError = 0;
+    private double tenCrossFold = 0;
+    
     public NaiveBayesPolicitcal(List<Tweet> tweets) {
         this.tweets = tweets;
 
@@ -43,6 +46,7 @@ public class NaiveBayesPolicitcal {
     }
 
     private void count() {
+        
         for (Tweet tweet : tweets) {
             if (tweet.isDemocrat()) {
                 this.democrat += 1;
@@ -52,6 +56,7 @@ public class NaiveBayesPolicitcal {
                 this.republicanTweets.add(tweet);
             }
         }
+        
         this.size = this.tweets.size();
         this.pOfDemocrat = this.democrat / ((1.0) * this.size);
         this.pOfRepublican = this.republican / ((1.0) * this.size);
@@ -66,8 +71,15 @@ public class NaiveBayesPolicitcal {
                 }
             }
         }
+        
         for (Tweet tweet : republicanTweets) {
-            String[] words = tweet.getMessage().split(" ");
+            String[] words = null;
+            try {
+                words = tweet.getMessage().split(" ");
+            } catch (StackOverflowError ex){
+                System.out.println();
+            }
+            
             for (String word : words) {
                 if (republicanWords.containsKey(word)) {
                     republicanWords.put(word, 1 + republicanWords.get(word));
@@ -101,19 +113,27 @@ public class NaiveBayesPolicitcal {
         String[] words;
         switch (group) {
             case democrat:
+                try{
                 words = tweet.getMessage().split(" ");
                 for (String word : words) {
                     if(pWordGiven(word, Party.democrat) > 0){
                         value += Math.log(pWordGiven(word, Party.democrat));
                     }
                 }
+                }catch (StackOverflowError ex){
+                    
+                }
                 return value;
             case republican:
+                try{
                 words = tweet.getMessage().split(" ");
                 for (String word : words) {
                     if(pWordGiven(word, Party.republican) > 0){
                         value += Math.log(pWordGiven(word, Party.republican));
                     }
+                }
+                }catch (StackOverflowError ex){
+                    
                 }
                 return value;
         }
@@ -145,4 +165,58 @@ public class NaiveBayesPolicitcal {
         }
         return classify;
     }
+
+    private void error() {
+        int count = 0;
+        for (int i = 0; i < tweets.size(); i++) {
+            if(tweets.get(i).getParty().equals(this.classify(tweets.get(i)))){
+                count += 1;
+            }
+        }
+        this.resubstitutionError = 1 - (count / ((1.0)*this.tweets.size()));
+        
+        int range = this.tweets.size()/10;
+        int lowerbound = 0;
+        int upperbound = range;
+        List<Tweet> testing = new ArrayList<Tweet>();
+        List<Tweet> training = new ArrayList<Tweet>();
+        NaiveBayesPolicitcal bayesPolicitcal = null;
+        for (int j = 0; j < 10; j++) {
+            lowerbound = j*range;
+            upperbound = lowerbound + range;
+            for (int i = lowerbound; i < upperbound; i++) {
+                testing.add(this.tweets.get(i));
+            }
+            for (int i = 0; i < lowerbound; i++) {
+                training.add(this.tweets.get(i));
+            }
+            for (int i = upperbound; i < this.tweets.size(); i++) {
+                training.add(this.tweets.get(i));
+            }
+            bayesPolicitcal = new NaiveBayesPolicitcal(training);
+            double cross = 0;
+            for (int i = 0; i < testing.size(); i++) {
+                if(bayesPolicitcal.classify(testing.get(i)) == testing.get(i).getParty()){
+                    cross += 1;
+                }
+            }
+            cross = cross / ((1.0)*testing.size());
+            this.tenCrossFold += cross;
+        }
+        this.tenCrossFold /= 10;
+    }
+
+    public double getResubstitutionError() {
+        return resubstitutionError;
+    }
+
+    public double getTenCrossFold() {
+        return tenCrossFold;
+    }
+
+    @Override
+    public void run() {
+        this.error();
+    }
+    
 }

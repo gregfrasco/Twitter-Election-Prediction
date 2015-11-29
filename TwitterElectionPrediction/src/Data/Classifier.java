@@ -26,7 +26,6 @@ public class Classifier {
         bayesSentiment = new NaiveBayesSentiment(data.getSentimentTweets());
         testingData = new TestingData();
         testingData.start();
-        
     }
     
     public Tweet classify(String message){
@@ -49,6 +48,14 @@ public class Classifier {
     
     public void classify(){
         this.politicains.loadData();
+    }
+
+    public NaiveBayesPolicitcal getBayesPolicitcal() {
+        return bayesPolicitcal;
+    }
+
+    public NaiveBayesSentiment getBayesSentiment() {
+        return bayesSentiment;
     }
     
 }

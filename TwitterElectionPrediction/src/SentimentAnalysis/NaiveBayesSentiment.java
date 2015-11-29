@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author frascog
  */
-public class NaiveBayesSentiment {
+public class NaiveBayesSentiment implements Runnable{
 
     private int postitve = 0;
     private int negitve = 0;
@@ -30,6 +30,9 @@ public class NaiveBayesSentiment {
     
     private HashMap<String,Integer> positiveWords;
     private HashMap<String,Integer> negitiveWords;
+    
+    private double resubstitutionError;
+    private double tenCrossFold;
 
     public NaiveBayesSentiment(List<Tweet> tweets) {
         this.tweets = tweets;
@@ -40,10 +43,6 @@ public class NaiveBayesSentiment {
         this.positiveWords = new HashMap<String,Integer>();
         this.negitiveWords = new HashMap<String,Integer>();
         this.count();
-    }
-
-    public NaiveBayesSentiment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void count() {
@@ -83,7 +82,6 @@ public class NaiveBayesSentiment {
     }
 
     private double pWordGiven(String word, Sentiment group) {
-        double value = 0;
         switch (group) {
             case positive:
                 if(positiveWords.containsKey(word)){
@@ -146,4 +144,60 @@ public class NaiveBayesSentiment {
         }
         return classify;
     }
+    
+    private void error() {
+        int count = 0;
+        for (int i = 0; i < tweets.size(); i++) {
+            if(tweets.get(i).getSentiment().equals(this.classify(tweets.get(i)))){
+                count += 1;
+            }
+        }
+        this.resubstitutionError = 1 - (count / ((1.0)*this.tweets.size()));
+        
+        int range = this.tweets.size()/10;
+        int lowerbound = 0;
+        int upperbound = range;
+        List<Tweet> testing = new ArrayList<Tweet>();
+        List<Tweet> training = new ArrayList<Tweet>();
+        NaiveBayesSentiment naiveBayesSentiment = null;
+        for (int j = 0; j < 10; j++) {
+            lowerbound = j*range;
+            upperbound = lowerbound + range;
+            for (int i = lowerbound; i < upperbound; i++) {
+                testing.add(this.tweets.get(i));
+            }
+            for (int i = 0; i < lowerbound; i++) {
+                training.add(this.tweets.get(i));
+            }
+            for (int i = upperbound; i < this.tweets.size(); i++) {
+                training.add(this.tweets.get(i));
+            }
+            naiveBayesSentiment = new NaiveBayesSentiment(training);
+            double cross = 0;
+            for (int i = 0; i < testing.size(); i++) {
+                if(naiveBayesSentiment.classify(testing.get(i)) == testing.get(i).getSentiment()){
+                    cross += 1;
+                }
+            }
+            cross = cross / ((1.0)*testing.size());
+            this.tenCrossFold += cross;
+        }
+        this.tenCrossFold /= 10;
+    }
+
+    public double getResubstitutionError() {
+        this.error();
+        return resubstitutionError;
+    }
+
+    public double getTenCrossFold() {
+        this.error();
+        return tenCrossFold;
+    }
+
+    @Override
+    public void run() {
+        this.error();
+    }
+
 }

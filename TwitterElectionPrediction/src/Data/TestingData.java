@@ -55,8 +55,8 @@ public class TestingData implements Runnable{
 
     @Override
     public void run() {
-        Classifier classifier = Classifier.getInstance();
-        for (Politicain politicain : classifier.getPoliticains().getPoliticains()) {
+        Politicians politicians = new Politicians();
+        for (Politicain politicain : politicians.getPoliticains()) {
             this.getTweets(politicain);
         }
     }
