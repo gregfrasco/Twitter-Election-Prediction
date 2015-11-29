@@ -7,6 +7,7 @@ package Views;
 
 import Data.Classifier;
 import Data.Politicain;
+import Data.PoliticalGraph;
 import Data.Politicians;
 import Data.SentimentGraph;
 import java.awt.GridLayout;
@@ -238,6 +239,8 @@ public class MainView extends javax.swing.JPanel implements Runnable{
         jPanel1.setLayout(new GridLayout(0, 2,0,2));
         SentimentGraph sentimentGraph = new SentimentGraph();
         jPanel1.add(sentimentGraph.getGraph());
+        PoliticalGraph politicalGraph = new PoliticalGraph();
+        jPanel1.add(politicalGraph.getGraph());
     }
 
     @Override
