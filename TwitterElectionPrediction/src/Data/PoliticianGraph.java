@@ -16,11 +16,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
  *
  * @author frascog
  */
-public class PoliticalGraph {
+public class PoliticianGraph {
     
     private JFreeChart barChart;
 
-    public PoliticalGraph() {
+    public PoliticianGraph() {
         this.barChart = this.makeGraph();
     }
     
@@ -36,22 +36,14 @@ public class PoliticalGraph {
     }
     
     private CategoryDataset createDataset() {
-        final String pos = "Democrat";
-        final String neg = "Republicain";
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        int republicain = 0;
-        int democrat = 0;
         Classifier classifier = Classifier.getInstance();
         Politicians politicians = classifier.getPoliticains();
+        int count = 0; 
         for (Politicain politicain : politicians.getPoliticains()) {
-            democrat += politicain.getNegitiveDemocrat().size();
-            republicain += politicain.getNegitiveRepublicain().size();
-            democrat += politicain.getPositiveDemocrat().size();
-            republicain += politicain.getPositiveRepublicain().size();
+            double value = politicain.getNegitiveDemocrat().size() + politicain.getNegitiveRepublicain().size() + politicain.getPositiveDemocrat().size() + politicain.getPositiveRepublicain().size();
+            dataset.addValue(value,count + "",politicain.getName());
         }
-        double total = republicain + democrat;
-        dataset.addValue(republicain/total, "0", neg);
-        dataset.addValue(democrat/total, "0", pos);
         return dataset;
     }
     

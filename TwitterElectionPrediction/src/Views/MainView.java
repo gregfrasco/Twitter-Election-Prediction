@@ -8,8 +8,10 @@ package Views;
 import Data.Classifier;
 import Data.Politicain;
 import Data.PoliticalGraph;
+import Data.PoliticianGraph;
 import Data.Politicians;
 import Data.SentimentGraph;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.text.DecimalFormat;
 
@@ -40,6 +42,7 @@ public class MainView extends javax.swing.JPanel implements Runnable{
         jPanelCanidents = new javax.swing.JPanel();
         jPanelTweets = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jPanelClass = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -51,7 +54,6 @@ public class MainView extends javax.swing.JPanel implements Runnable{
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jPanelSettings = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanelCanidentsLayout = new javax.swing.GroupLayout(jPanelCanidents);
         jPanelCanidents.setLayout(jPanelCanidentsLayout);
@@ -77,13 +79,26 @@ public class MainView extends javax.swing.JPanel implements Runnable{
             .addGap(0, 316, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 184, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanelTweetsLayout = new javax.swing.GroupLayout(jPanelTweets);
         jPanelTweets.setLayout(jPanelTweetsLayout);
         jPanelTweetsLayout.setHorizontalGroup(
             jPanelTweetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTweetsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelTweetsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelTweetsLayout.setVerticalGroup(
@@ -91,7 +106,9 @@ public class MainView extends javax.swing.JPanel implements Runnable{
             .addGroup(jPanelTweetsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Tweets", jPanelTweets);
@@ -174,19 +191,6 @@ public class MainView extends javax.swing.JPanel implements Runnable{
 
         jTabbedPane1.addTab("Classification", jPanelClass);
 
-        javax.swing.GroupLayout jPanelSettingsLayout = new javax.swing.GroupLayout(jPanelSettings);
-        jPanelSettings.setLayout(jPanelSettingsLayout);
-        jPanelSettingsLayout.setHorizontalGroup(
-            jPanelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
-        );
-        jPanelSettingsLayout.setVerticalGroup(
-            jPanelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 518, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Settings", jPanelSettings);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,9 +216,9 @@ public class MainView extends javax.swing.JPanel implements Runnable{
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelCanidents;
     private javax.swing.JPanel jPanelClass;
-    private javax.swing.JPanel jPanelSettings;
     private javax.swing.JPanel jPanelTweets;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
@@ -236,11 +240,14 @@ public class MainView extends javax.swing.JPanel implements Runnable{
         Thread update = new Thread(this);
         update.start();
         
-        jPanel1.setLayout(new GridLayout(0, 2,0,2));
+        jPanel1.setLayout(new GridLayout(1,2,1,2));
         SentimentGraph sentimentGraph = new SentimentGraph();
         jPanel1.add(sentimentGraph.getGraph());
         PoliticalGraph politicalGraph = new PoliticalGraph();
         jPanel1.add(politicalGraph.getGraph());
+        jPanel2.setLayout(new BorderLayout());
+        PoliticianGraph politicianGraph = new PoliticianGraph();
+        jPanel2.add(politicianGraph.getGraph());
     }
 
     @Override
