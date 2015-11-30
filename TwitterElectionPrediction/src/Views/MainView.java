@@ -119,7 +119,7 @@ public class MainView extends javax.swing.JPanel implements Runnable{
 
         jLabel3.setText("Loading...");
 
-        jLabel4.setText("10 cross fold validation:");
+        jLabel4.setText("10 cross fold validation error:");
 
         jLabel5.setText("Loading...");
 
@@ -127,7 +127,7 @@ public class MainView extends javax.swing.JPanel implements Runnable{
 
         jLabel7.setText("Resubitution Error:");
 
-        jLabel8.setText("10 cross fold validation:");
+        jLabel8.setText("10 cross fold validation error:");
 
         jLabel9.setText("Loading...");
 
@@ -161,7 +161,7 @@ public class MainView extends javax.swing.JPanel implements Runnable{
                             .addGroup(jPanelClassLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel10)))))
-                .addContainerGap(759, Short.MAX_VALUE))
+                .addContainerGap(725, Short.MAX_VALUE))
         );
         jPanelClassLayout.setVerticalGroup(
             jPanelClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,8 +264,11 @@ public class MainView extends javax.swing.JPanel implements Runnable{
                 done1 = true;
             }
             if(this.classifier.getBayesSentiment().getTenCrossFold() > 0){
-                this.jLabel9.setText(this.classifier.getBayesSentiment().getResubstitutionError()+ "%");
-                this.jLabel10.setText(this.classifier.getBayesSentiment().getTenCrossFold() + "%");
+                double resub = this.classifier.getBayesSentiment().getResubstitutionError();
+                DecimalFormat df = new DecimalFormat("#.####");
+                this.jLabel9.setText(df.format(resub) + "%");
+                double tenCross = this.classifier.getBayesSentiment().getTenCrossFold();
+                this.jLabel10.setText(df.format(tenCross) + "%");
                 done2 = true;
             }
         }
