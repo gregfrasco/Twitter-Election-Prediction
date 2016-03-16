@@ -1,0 +1,10 @@
+.jumbotron {
+background-image: url("header.png");
+background-size: cover;}
+
+.header{
+  position: relative;;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+}
